@@ -1,2 +1,2 @@
-# FangGameNo1
-Proudly presented by FangGameStudio
+# 奮遊試作品一號:腦同化算術
+奮遊Studio榮譽出品
