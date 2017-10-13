@@ -1,0 +1,321 @@
+<!-- Fen-Game-Studio author:yenpinchiu --> 
+
+<!DOCTYPE html>
+<html>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <head>
+    <title>笨蛋9腦同化算術 ~~奮遊工作室ver~~</title>
+  </head>
+  <body>
+    <div id="rule"><font size="5px">兩個數字相加,如果答案不是9就選錯誤的答案,如果答案是9就選正確的答案,隨著答題數增加每題能想的時間會慢慢變少,你能撐幾題呢?</font></div>
+    <div id="numQuestionPanel">
+        <div><font size="50px">第</font></div>
+            <div id="numQuestion"><font size="50px">0</font></div>
+        <div><font size="50px">題</font></div>
+    </div>
+    <div id="equation">
+        <div id="number1">0</div>
+        <div id="sign"><font size="50px">+</font></div>
+        <div id="number2">0</div>
+        <div><font size="50px">=</font></div>
+        <div><input id="answer1" type="button" value=0 style="width:75px;height:60px;font-size:50px;"></input></div>
+        <div><input id="answer2" type="button" value=0 style="width:75px;height:60px;font-size:50px;"></input></div>
+    </div>
+    <div id="gg"></div>
+    <div id="restartdiv" style="display:none"><input id="restart" type="button" value="Restart" style="width:400px;height:100px;font-size:50px;"></input></div>
+    <div id="countdown"></div>
+
+    <style>
+        div 
+        {
+            float:left;
+            margin:20px;
+        }
+
+        #equation 
+        {
+            height: 200px;
+            width: 800px;
+            background-color: white;
+         
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            margin-top: -100px;
+            margin-left: -200px;
+        }
+
+        #numQuestionPanel 
+        {
+            height: 200px;
+            width: 400px;
+            background-color: white;
+         
+            position: absolute;
+            left: 30%;
+        }
+
+        #gg 
+        {
+            height: 100px;
+            width: 1200px;
+            background-color: white;
+         
+            position: absolute;
+            top: 30%;
+            left: 45%;
+        }
+
+        #restart 
+        {
+            height: 100px;
+            width: 800px;
+            background-color: white;
+         
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            margin-top: -100px;
+            margin-left: -200px;
+        }
+
+        #rule 
+        {
+            height: 20px;
+            width: 2000px;
+            background-color: white;
+         
+            position: absolute;
+            top: 90%;
+            left: 25%;
+            margin-top: -100px;
+            margin-left: -200px;
+        }
+
+    </style>
+
+    <script>
+        var numQuestion = 0;
+        var face = 0;
+        var countdown = 0;
+        var bomb;
+
+        function count()
+        {
+            countdown = countdown - 0.1;
+            document.getElementById("countdown").style.fontSize = "50px";
+            document.getElementById("countdown").innerHTML = countdown.toFixed(1);
+            
+            if (countdown <= 0)
+            {
+                clearInterval(bomb);
+                retard();
+            }
+        }
+
+        function creatQuestion()
+        {
+            document.getElementById('equation').style.pointerEvents = 'auto';
+
+            countdown = Math.max((2.5 - Math.floor(numQuestion/5)*0.1).toFixed(1),0.5);
+            document.getElementById("countdown").style.fontSize = "50px";
+            document.getElementById("countdown").innerHTML = countdown;
+            bomb = setInterval(count,100)
+
+            numQuestion ++;
+            document.getElementById("numQuestion").style.fontSize = "50px";
+            document.getElementById("numQuestion").innerHTML = numQuestion;
+
+            document.getElementById("gg").innerHTML = "<font size=\"100px\">(・ω・)</font>";
+
+            var randNum1 = Math.floor((Math.random() * 2));
+            var randNum2 = Math.floor((Math.random() * 2));
+
+            var number1 = Math.floor((Math.random() * 10));
+            var number2 = Math.floor((Math.random() * (10 - number1)));
+            var number3 = Math.floor((Math.random() * 10));
+
+            sign = document.getElementById("sign");
+            sign.style.fontSize = "50px";
+
+            /*var answer= 0
+            if ( randNum1 == 0)
+            {
+                answer = number1 + number2;
+            }
+            else
+            {
+                answer = number1 - number2;
+            }*/
+            answer = number1 + number2;
+            
+            elementNumber1 = document.getElementById("number1");
+            elementNumber2 = document.getElementById("number2");
+            elementNumber1.style.fontSize = "50px";
+            elementNumber2.style.fontSize = "50px";
+            elementNumber1.innerHTML = number1;
+            elementNumber2.innerHTML = number2;
+
+            button1 = document.getElementById("answer1");
+            button2 = document.getElementById("answer2");
+
+            /*
+            if ( answer == number3 || answer == -1 * number3 )
+            {
+                number3 = number3 -1;
+            }
+            */
+            if ( answer == number3 )
+            {
+                while (answer == number3) {
+                    number3 = Math.floor((Math.random() * 10));
+                }
+            }
+
+            /*
+            var displayNum3 = number3;
+            if ( displayNum3 < 0)
+            {
+                displayNum3 = -1 * displayNum3;
+            }
+
+            var displayAnswer = answer;
+            if ( displayAnswer < 0)
+            {
+                displayAnswer = -1 * displayAnswer;
+            }*/
+
+            if ( randNum2 == 0)
+            {
+                //button1.value = displayNum3;
+                //button2.value = displayAnswer;
+                button1.value = number3;
+                button2.value = answer;
+            }
+            else
+            {
+                //button1.value = displayAnswer;
+                //button2.value = displayNum3;
+                button1.value = answer;
+                button2.value = number3;
+            }
+        }
+
+        function retard()
+        {
+            document.getElementById("equation").style.display = "none";
+            document.getElementById("restartdiv").style.display = "block";
+
+            document.getElementById("gg").innerHTML = "<font size=\"100px\">(((ﾟдﾟ))) 答錯惹</font>";
+
+            restart.onclick = function(){
+                            document.getElementById("restartdiv").style.display = "none";
+                            document.getElementById("equation").style.display = "block";
+                            numQuestion = 0;
+                            clearInterval(bomb);
+                            creatQuestion();
+                        };
+        }
+
+        function happy()
+        {
+            if ( face % 2 == 1 )
+            {
+                document.getElementById("gg").innerHTML = "<font size=\"100px\">(・ω・)</font>";
+            }
+            else
+            {
+                document.getElementById("gg").innerHTML = "<font size=\"100px\">(ﾉ>ω<)ﾉ 正確!!</font>";
+            }
+            face ++;
+        }
+
+        function genius()
+        {
+            var cheer = setInterval(happy,200)
+            setTimeout(function(){clearInterval(cheer);creatQuestion();}, 850);      
+        }
+        
+        creatQuestion();
+
+        button1.onclick = function() 
+        {
+            document.getElementById('equation').style.pointerEvents = 'none';
+
+            clearInterval(bomb);
+            
+            button1 = document.getElementById("answer1");
+            button2 = document.getElementById("answer2");
+            elementNumber1 = document.getElementById("number1");
+            elementNumber2 = document.getElementById("number2");
+
+            number1 = parseInt(elementNumber1.innerHTML)
+            number2 = parseInt(elementNumber2.innerHTML)
+
+            if ( number1 + number2 == button1.value)
+            {
+                if ( number1 + number2 == 9)
+                {
+                    genius();
+                }
+                else
+                {
+                    retard();
+                }
+            }
+            else
+            {
+                if ( number1 + number2 == 9)
+                {
+                    retard();
+                }
+                else
+                {
+                    genius();
+                }
+            }
+
+            
+        };
+
+        button2.onclick = function() 
+        {
+            document.getElementById('equation').style.pointerEvents = 'none';
+
+            clearInterval(bomb);
+
+            button1 = document.getElementById("answer1");
+            button2 = document.getElementById("answer2");
+            elementNumber1 = document.getElementById("number1");
+            elementNumber2 = document.getElementById("number2");
+
+            number1 = parseInt(elementNumber1.innerHTML)
+            number2 = parseInt(elementNumber2.innerHTML)
+
+            if ( number1 + number2 == button2.value)
+            {
+                if ( number1 + number2 == 9)
+                {
+                    genius();
+                }
+                else
+                {
+                    retard();
+                }
+            }
+            else
+            {
+                if ( number1 + number2 == 9)
+                {
+                    retard();
+                }
+                else
+                {
+                    genius();
+                }
+            }
+        };
+        
+    </script>
+  </body>
+</html>
